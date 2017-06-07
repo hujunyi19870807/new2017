@@ -1,0 +1,1182 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <meta name="viewport" content="user-scalable=no,width=device-width,initial-scale=1,maximum-scale=1,minimal-ui">
+    <title>天维首3页新版</title>
+
+    <link href="index-20170701.css?2017060203" rel="stylesheet" />
+    <link href="http://cms6.skykiwi.com/css/FocusPic-v1.0.css" rel="stylesheet" />
+    <link href="http://cms6.skykiwi.com/css/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <script src="http://img.skykiwi.com/common/jquery-1.12.4.min.js?20170622"></script>
+    <script src="http://cms6.skykiwi.com/js/FocusPic-v1.0.js"></script>
+    <script src="http://cms6.skykiwi.com/js/scroll-v1.0.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            //document.getElementById("div-sky-leftnav").style.top = "0px";
+        }
+        $(document).ready(function () {
+            // begin
+            $('#flash0').slideBox({
+                duration: 0.3,
+                easing: 'swing',
+                delay: 5,
+                hideClickBar: false,
+                clickBarRadius: 10,
+                width: 625,
+                height: 300
+            });
+
+            $('#flash1').slideBox({
+                duration: 0.3,
+                easing: 'swing',
+                delay: 5,
+                hideClickBar: false,
+                clickBarRadius: 10,
+                width: 300,
+                height: 400
+            });
+
+            $('#flash2').slideBox({
+                duration: 0.3,
+                easing: 'swing',
+                delay: 5,
+                hideClickBar: false,
+                clickBarRadius: 10,
+                width: 300,
+                height: 270
+            });
+
+            //end
+
+            $(".tab-left-double").find("div .caijin-title-span").each(function (e) {
+                $(this).find("span").eq(0).click();
+            });
+
+            addhotserach();//动态修改hot热搜样式
+
+            $("#li-weather-control").mouseover(function () {
+                $(".sky-weather").show();
+            });
+            $("#li-weather-control").mouseout(function () {
+                $(".sky-weather").hide();
+            });
+            $("#div-weather-content").mouseout(function () {
+                $(".sky-weather").hide();
+            });
+
+            $(window).scroll(function () {
+                var leftnav = $("#div-sky-leftnav");
+                var divheight = leftnav.height();
+                var winheight = $(window).height();
+                var scrollheight = $(window).scrollTop();
+                if (divheight + 30 < winheight) {
+                    document.getElementById("div-sky-leftnav").style.position = "fixed";
+                    document.getElementById("div-sky-leftnav").style.top = "30px";
+                }
+                else {
+                    if (scrollheight < divheight - winheight) {
+                        //alert("滚动条已经到达底部为" + $(document).scrolltop());
+                        //需要固定层为fixed
+                        document.getElementById("div-sky-leftnav").style.position = "fixed";
+                        document.getElementById("div-sky-leftnav").style.top = ((-scrollheight)+30) + "px";
+                    }
+                }
+            });
+
+            //天维团购特效 begin
+            var flag = true;
+            $("#sky-tuangou-prev").on("click", function () {
+                var dataindex = $(".tianwei-right-tab .tianwei-tuangou-item:visible").prev().attr("data-index");
+                if (dataindex >= 0 && dataindex != undefined) {
+                    $(".tianwei-tuangou-item:visible").hide().prev().show();
+                }
+            });
+            $("#sky-tuangou-next").on("click", function () {
+                var dataindex = $(".tianwei-right-tab .tianwei-tuangou-item:visible").next().attr("data-index");
+                if (dataindex < 4 && dataindex != undefined) {
+                    $(".tianwei-tuangou-item:visible").hide().next().show();
+                }
+            });
+            var timer = null;
+            $("#sky-tuangou-tab").hover(function () {
+                flag = false;
+                clearInterval(timer);
+            }, function () {
+                flag = true;
+                timer = setInterval(go, 3000);
+            });
+            function autoGo(bol) {
+                //自动行走
+                if (bol) 
+                    timer = setInterval(go, 3000);
+            }
+            autoGo(flag);
+            function go() {
+                var dataindex =parseInt($(".tianwei-right-tab .tianwei-tuangou-item:visible").attr("data-index"));
+                dataindex = dataindex + 1;
+                if (dataindex >= 4) {
+                    dataindex = 0;
+                }
+                $(".tianwei-right-tab .tianwei-tuangou-item").eq(dataindex).show().siblings("div").hide();
+            }
+            //天维团购特效 end
+            //天维动态广告 begin
+            var arg0 = Math.floor(Math.random() * 10);//使用除以2取余的算法获取广告。
+            //var arg1=Math.floor(arg0);
+            //alert(arg0);
+            //alert(arg1);
+            
+            //天维动态广告 end
+        });
+
+        var imgIndex = 0;
+
+        var tabChangeList = ["美食", "旅游", "生活", "时尚"];
+        function initTabClass(obj, colorName, index) {
+            var controlIndex = $(obj).attr("controlindex");
+            $(obj).css("color", colorName);
+            $(obj).addClass("active-tit-a");
+            $(obj).siblings("a").each(function (i) {
+                if ($(this).attr("controlindex") == controlIndex) {
+                    $(this).show();
+                }
+                else {
+                    $(this).hide();
+                }
+            });
+
+            if (!Array.prototype.indexOf) {
+                Array.prototype.indexOf = function (elt /*, from*/) {
+                    var len = this.length >>> 0;
+                    var from = Number(arguments[1]) || 0;
+                    from = (from < 0)
+                        ? Math.ceil(from)
+                        : Math.floor(from);
+                    if (from < 0)
+                        from += len;
+                    for (; from < len; from++) {
+                        if (from in this &&
+                            this[from] === elt)
+                            return from;
+                    }
+                    return -1;
+                };
+            }
+
+
+            if (tabChangeList.indexOf($(obj).html()) > -1) {
+                $(obj).addClass("active-tit-ashenghuo");
+            }
+
+            $(obj).siblings().each(function () {
+                $(this).css("color", "#5c5c5c");
+                $(this).removeClass("active-tit-a").removeClass("active-tit-ashenghuo");
+            });
+
+            $(obj).parent().siblings().each(function () {
+                $(this).children().each(function (i) {
+                    if ($(this).attr("controlIndex") == controlIndex) {
+                        $(this).show();
+                    }
+                    else {
+                        $(this).hide();
+                    }
+                });
+            });
+        }
+
+        function addhotserach() {
+            $("#ul-hotsearch-news li:eq(0)").addClass("hotnewfirst");
+            $("#ul-hotsearch-news li:eq(1)").addClass("hotnewsecend");
+            $("#ul-hotsearch-news li:eq(2)").addClass("hotnewsecend");
+            $("#ul-hotsearch-news li:eq(2)").after('<li class="list-group-item-line"></li>');
+        }
+        function show(obj, id) {
+            var objDiv = $("#" + id + "");
+            $(objDiv).css("display", "block");
+            $(objDiv).css("left", event.clientX - 232);
+            $(objDiv).css("top", event.clientY - 12);
+        }
+        function hide(obj, id) {
+            var objDiv = $("#" + id + "");
+            $(objDiv).css("display", "none");
+        }
+
+        function nextproperty() {
+            var dataindex = $(".indexhomes:visible").attr("data-index");
+            if (dataindex < 4) {
+                $(".indexhomes:visible").hide().next().show();
+            }
+        }
+        function prevproperty() {
+            var dataindex = $(".indexhomes:visible").attr("data-index");
+            if (dataindex > 0) {
+                $(".indexhomes:visible").hide().prev().show();
+            }
+        }
+       
+
+    </script>
+    <style type="text/css">
+        .head {
+            background: #222;
+            height: 30px;
+            line-height:30px;
+            text-align:center;
+        }
+            .head a {
+                text-decoration: none;
+                color: #fff;
+                float:right;
+            }
+                .head a:hover {
+                    color: #ec7f16;
+                }
+    </style>
+</head>
+<body>
+    <header class="head">
+        <div style="margin:0 auto;width:1180px;">
+            <a href="http://www.skykiwi.com/" target="_blank" title="回天维旧版">回天维旧版</a>
+        </div>
+    </header>
+    
+    <div class="wrapper">
+        <div class="sky-left-nav" id="div-sky-leftnav">
+            <div class="sky-left-logo">
+                <img src="image/skykiwi.png">
+            </div>
+            <div class="sky-left-box">
+                <ul class="sky-left-ul clearfix">
+                    <li style="margin-top:18px">
+                        <span><a href="http://em.skykiwi.com/english.html" target="_blank" title="Facebook">English</a></span> |
+                        <span class="active-text">中文</span>
+                    </li>
+                    <script src="http://cms6.skykiwi.com/js/lunar-v1.0.js"></script>
+                    <li style="display:flex;justify-content: flex-start;" id="li-weather-control">
+                        <div id="div-weather-change" class="clearfix">
+                            <span id="img-weather" style="margin-top:-5px" src="image/sky-weather.png" class=""></span>
+                            <span style="color:#ec7f16;float:left" id="span-mix-temp"></span>
+                            <span id="span-min-temp" style="float:left"></span>
+                            <span id="span-city" style="float:left;display:inline-block;width:75px;text-align:center"></span>
+                            <span style="color:#ec7f16; float:right">▼</span>
+                        </div>
+                        <div id="div-weather-content" class="sky-weather" style="display:none">
+                            <!--#include virtual="/ssi/weather201707.html" -->
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#weatherCities li").click(function () {
+                                    $("#span-city").html($(this).attr("data-title-en"));
+                                    $("#span-min-temp").html("/" + $(this).attr("data-min-temp") + "°");
+                                    $("#span-mix-temp").html($(this).attr("data-max-temp") + "°");
+                                    $("#img-weather").attr("class", "").attr("class", $(this).attr("data-icon"));
+                                });
+                                $("#weatherCities li:eq(0)").click();
+                            })
+                        </script>
+                    </li>
+                </ul>
+                <div class="sky-nav-index">
+                    <span class="sky-nav-tit">天维首页</span>
+                    <ul class="sky-nav-ul clearfix">
+                        <li>
+                            <a href="http://bbs.skykiwi.com" target="_self" title="新西兰最大的华人网络论坛社区，在这里您可以交朋友，发话题，交易新货或二手物品，车辆交易，房屋买卖，求职招聘，房屋租赁，寻找美食，查找信息，寻求帮助，信息共享 - 点击进入新西兰最大的华人论坛，天维网社区论坛" id="linkBBS">论坛</a>
+                        </li>
+                        <li>
+                            <a href="http://news.skykiwi.com" target="_self" title="新西兰新闻，澳洲新闻，大陆新闻，港澳台新闻，国际新闻_尽在天维网新闻频道 - 点击进入天维网新闻频道">新闻</a>
+                        </li>
+                        <li>
+                            <a href="http://go.skykiwi.com" target="_blank" title="全新的新西兰导购频道，带您在新西兰选时尚、淘实惠！">导购</a>
+                        </li>
+                        <li>
+                            <a href="http://money.skykiwi.com" target="_blank" title="新西兰房产投资，新西兰财经政策，新西兰房屋买卖，商业地产，农场林场，新西兰热房推荐">房产</a>
+                        </li>
+                        <li>
+                            <a href="http://imedu.skykiwi.com" target="_self" title="新西兰留学，新西兰移民，新西兰留学移民政策发布，新闻发布，尽在天维留学移民频道 - 点击进入天维网留学移民频道">移民</a>
+                        </li>
+                        <li>
+                            <a href="http://shop.skykiwi.com" target="_blank" title="新西兰比价购物频道 - 为您节省每一分钱，方便的网上比价购物体验 - 点击进入天维价格比较频道 / 合作网站 PriceMe">比价</a>
+                        </li>
+                        <li>
+                            <a href="http://www.wellcome.co.nz" target="_self" title="源于新西兰的健康体验，天维旗下健康购物平台 - 点击进入纽惠康网站">商城</a>
+                        </li>
+                        <li>
+                            <a href="http://opage.skykiwi.com" target="_self" title="新西兰最大最全的商业服务、生活实用咨询搜索系统，奥克兰、惠灵顿、基督城商家搜索 - 点击进入天维橙页搜索系统">橙页</a>
+                        </li>
+                        <li>
+                            <a href="http://www.soku.co.nz/bonus/list?source=index_navigation" target="_blank" title="新西兰团购打折，尽在天维福利！剁手党的福音！">福利</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sky-phone">
+                    <div class="sky-phone-left">
+                        <img style="display:block" src="image/tianweiphone_03_02.png" />
+                    </div>
+                    <div class="sky-phone-right">
+                        <img style="display:block" src="image/erweima.jpg" />
+                    </div>
+                </div>
+                <div class="sky-video">
+                    <div class="sky-video-tit">正在直播...</div>
+                    <div class="sky-video-content">
+                        <img alt="" height="105" width="165" src="/image/zhibo.gif" />
+                    </div>
+                </div>
+                <div class="sky-nav-banner">
+                    <img alt="" src="/image/sky-nav-banner.png" />
+                </div>
+            </div>
+        </div>
+
+        <div class="maincontent">
+            <div class="topbannermiddle">
+                <img src="image/bannnernew002_06.jpg" />
+            </div>
+            <div class="topbanner">
+                <img src="image/banner002.png" />
+            </div>
+            <div>
+                <div class="rightdivchid1">
+                    <div id="flash0" class="border slideBox">
+                        <ul class="items">
+                            [e:loop={"select * from phome_ecms_news where classid=197 and checked=1 order by istop asc limit 6",6,24,1}]
+                            <li>
+                                <a href="<?=$bqsr[titleurl]?>" title="<?=$bqr[ftitle]?>">
+                                    <img width="625" height="300" src="<?=$bqsr[titlepic]?>">
+                                </a>
+                            </li>
+                            [/e:loop]
+                        </ul>
+                    </div>
+                    <div class="sky-hot-news">
+                        <span class="sky-hot-news-title">HOT 突发新闻</span>
+                        <div class="sky-hot-news-context">
+                            <dl id="opage_hot_list">
+                                [e:loop={'select * from phome_ecms_news where classid in (4,5,6,7,8,9,14,15,16,17,18,19,49,50,51,52,53,160,161,110,111,112,113,114,115,116) and checked=1 and havehtml=1 and issudden=1 order by issudden,newstime desc limit 0,3', 4, 24, 1}]
+                                <dd><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],44)?></a></dd>
+                                [/e:loop]
+                            </dl>
+                            <span>
+                                <a class="sky-hot-news-context-pre" id="pre_opage">▲</a>
+                                <a class="sky-hot-news-context-next" id="next_opage">▼</a>
+                            </span>
+                            <script language="javascript" type="text/javascript">
+                                var scroll_opage = new ScrollText("opage_hot_list", "pre_opage", "next_opage", true, 80, true);
+                                scroll_opage.LineHeight = 25;
+                            </script>
+                        </div>
+                    </div>
+
+                    <div class="sky-news">
+                        <span style=""><label class="sky-news-a">天维</label><label class="sky-news-color">新闻</label></span>
+                        <a class="sky-more-style sky-news-color" href="http://news.skykiwi.com" target="_self" title="新西兰新闻，澳洲新闻，大陆新闻，港澳台新闻，国际新闻_尽在天维网新闻频道 - 点击进入天维网新闻频道">更多>></a>
+                    </div>
+
+                    <ul id="ul-new-list">
+                        [e:loop={'select * from phome_ecms_news where classid in (4,5,6,7,8,9,14,15,16,17,18,19,49,50,51,52,53,160,161,110,111,112,113,114,115,116) and checked=1 and havehtml=1 and orderid=1 order by newstime desc limit 0,1', 4, 24, 1}]
+                        <li class="list-news-item">
+                            <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">
+                                <img width="140" height="75" src="<?=$bqr[titlepic]?>" />
+                            </a>
+                            <dl>
+                                <dt><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],44)?></a></dt>
+                                <dd>时间：2017年4月20日15：00pm </dd>
+                                <dd>
+                                    <?php $naclassid = array("4","5","6","7","8","9");
+                                    $hqclassid = array("14","15","16","17","18","19");
+                                    $tzclassid = array("49","50","51","52","53","160","161");
+                                    $ymclassid = array("110","111","112","113","114","115","116");
+                                    if(in_array($bqr[classid],$naclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">纽澳新闻</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$hqclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">环球报道</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$tzclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">投资频道</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$ymclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">留学移民</span>');
+                                    }
+
+                                    if (!empty($bqr[keyboard])){
+                                    $keywordlist = explode(',',$bqr[keyboard]);
+                                    foreach($keywordlist as $value){
+                                    echo("
+                                    <span class='list-news-item-word'>$value</span>");
+                                    }
+                                    }
+                                    ?>
+                                </dd>
+                            </dl>
+                        </li>
+                        [/e:loop]
+                        [e:loop={'select * from phome_ecms_news where classid in (4,5,6,7,8,9,14,15,16,17,18,19,49,50,51,52,53,160,161,110,111,112,113,114,115,116) and checked=1 and havehtml=1 and orderid=2 order by newstime desc limit 0,1', 4, 24, 1}]
+                        <li class="list-news-item">
+                            <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">
+                                <img width="140" height="75" src="<?=$bqr[titlepic]?>" />
+                            </a>
+                            <dl>
+                                <dt><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],44)?></a></dt>
+                                <dd>时间：2017年4月20日15：00pm </dd>
+                                <dd>
+                                    <?php $naclassid = array("4","5","6","7","8","9");
+                                    $hqclassid = array("14","15","16","17","18","19");
+                                    $tzclassid = array("49","50","51","52","53","160","161");
+                                    $ymclassid = array("110","111","112","113","114","115","116");
+                                    if(in_array($bqr[classid],$naclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">纽澳新闻</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$hqclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">环球报道</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$tzclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">投资频道</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$ymclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">留学移民</span>');
+                                    }
+
+                                    if (!empty($bqr[keyboard])){
+                                    $keywordlist = explode(',',$bqr[keyboard]);
+                                    foreach($keywordlist as $value){
+                                    echo("
+                                    <span class='list-news-item-word'>$value</span>");
+                                    }
+                                    }
+                                    ?>
+                                </dd>
+                            </dl>
+                        </li>
+                        [/e:loop]
+                        [e:loop={'select * from phome_ecms_news where classid in (4,5,6,7,8,9,14,15,16,17,18,19,49,50,51,52,53,160,161,110,111,112,113,114,115,116) and checked=1 and havehtml=1 and orderid=3 order by newstime desc limit 0,1', 4, 24, 1}]
+                        <li class="list-news-item">
+                            <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">
+                                <img width="140" height="75" src="<?=$bqr[titlepic]?>" />
+                            </a>
+                            <dl>
+                                <dt><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],44)?></a></dt>
+                                <dd>时间：2017年4月20日15：00pm </dd>
+                                <dd>
+                                    <?php $naclassid = array("4","5","6","7","8","9");
+                                    $hqclassid = array("14","15","16","17","18","19");
+                                    $tzclassid = array("49","50","51","52","53","160","161");
+                                    $ymclassid = array("110","111","112","113","114","115","116");
+                                    if(in_array($bqr[classid],$naclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">纽澳新闻</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$hqclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">环球报道</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$tzclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">投资频道</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$ymclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">留学移民</span>');
+                                    }
+
+                                    if (!empty($bqr[keyboard])){
+                                    $keywordlist = explode(',',$bqr[keyboard]);
+                                    foreach($keywordlist as $value){
+                                    echo("
+                                    <span class='list-news-item-word'>$value</span>");
+                                    }
+                                    }
+                                    ?>
+                                </dd>
+                            </dl>
+                        </li>
+                        [/e:loop]
+
+                        [e:loop={'select * from phome_ecms_news where classid in (4,5,6,7,8,9,14,15,16,17,18,19,49,50,51,52,53,160,161,110,111,112,113,114,115,116) and checked=1 and havehtml=1
+                        and not exists(select 1 from phome_ecms_news where classid in (4,5,6,7,8,9,14,15,16,17,18,19,49,50,51,52,53,160,161,110,111,112,113,114,115,116)
+                        and checked=1 and havehtml=1 and orderid IN (1,2,3)
+                        GROUP BY orderid HAVING MAX(newstime)=phome_ecms_news.newstime AND orderid=phome_ecms_news.orderid)
+                        order by newstime desc limit 0,9', 4, 24, 1}]
+                        <li class="list-news-item">
+                            <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">
+                                <img width="140" height="75" src="<?=$bqr[titlepic]?>" />
+                            </a>
+                            <dl>
+                                <dt><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],44)?></a></dt>
+                                <dd>时间：2017年4月20日15：00pm </dd>
+                                <dd>
+                                    <?php $naclassid = array("4","5","6","7","8","9");
+                                    $hqclassid = array("14","15","16","17","18","19");
+                                    $tzclassid = array("49","50","51","52","53","160","161");
+                                    $ymclassid = array("110","111","112","113","114","115","116");
+                                    if(in_array($bqr[classid],$naclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">纽澳新闻</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$hqclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">环球报道</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$tzclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">投资频道</span>');
+                                    }
+                                    elseif(in_array($bqr[classid],$ymclassid,true)){
+                                    echo ('
+                                    <span class="list-news-item-category">留学移民</span>');
+                                    }
+
+                                    if (!empty($bqr[keyboard])){
+                                    $keywordlist = explode(',',$bqr[keyboard]);
+                                    foreach($keywordlist as $value){
+                                    echo("
+                                    <span class='list-news-item-word'>$value</span>");
+                                    }
+                                    }
+                                    ?>
+                                </dd>
+                            </dl>
+                        </li>
+                        [/e:loop]
+
+                        <li class="rightdivchid1-bannerlist4" style="height:115px;border-bottom:1px solid #ccc ">
+                            <ul>
+                                [e:loop={'220', 4, 15, 1}]
+                                <li>
+                                    <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><img alt="" src="<?=$bqr[titlepic]?>" /></a>
+                                    <span><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=$bqr[title]?></a></span>
+                                </li>
+                                [/e:loop]
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <script type="text/javascript">
+                                $(function () {
+                                    $("#ul-new-list li:eq(3)").after("<li class='list-news-item' style='height:110px'><div style='height:84px;width:950px;padding:16px 0'><img height='77' src='/image/banner4.png' /></div></li>");
+                                    $("#ul-new-list li:eq(8)").after($(".rightdivchid1-bannerlist4"));
+                                    $("#ul-new-list li:last-child").css("border", "0px");
+                                })
+                    </script>
+
+                    <div class="rightdivchid1-newsmore"><a href="http://news.skykiwi.com" target="_self" title="新西兰新闻，澳洲新闻，大陆新闻，港澳台新闻，国际新闻_尽在天维网新闻频道 - 点击进入天维网新闻频道">+加载更多</a></div>
+                </div>
+                <div class="rightdivchid2">
+                    <div class="bannerlist">
+                        <dl>
+                            <dt>
+                                <img src="image/bannersmall1.jpg" />
+                            </dt>
+                            <dd>
+                                眼镜店别偷禅了！请留意是否有人贱卖
+                            </dd>
+                        </dl>
+                        <dl class="bannerlistdl2">
+                            <dt>
+                                <img src="image/bannersmall1.jpg" />
+                            </dt>
+                            <dd>
+                                <a href="" target="_blank" title="">眼镜店别偷禅了！请留意是否有人贱卖</a>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div style="clear:both">
+                    </div>
+                    <div class="sky-banner" style="margin-top:18px">
+                        <img src="image/bannerright1.jpg" />
+                    </div>
+                    <div class="news-general-list">
+                        <ul class="news-general-list-ul">
+                            [fillblank]92,16,30[/fillblank]
+                            [fillblank]92,16,30[/fillblank]
+                        </ul>
+                    </div>
+
+                    <div class="sky-video-right">
+                        <span class="sky-video-right-title">天维视频</span>
+                        <a class="sky-more-style" href="http://ent.skykiwi.com/" target="_self" title="新西兰房地产频道" id="link_title_blue">更多>></a>
+                    </div>
+                    [e:loop={'211',1,2,0}]
+                    <div class="sky-video-right-top1">
+                        <?=$bqsr[smalltext]?>
+                    </div>
+                    <div class="sky-video-right-small-title">
+                        <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">【新西兰加点糖】<?=$bqr[title]?>...</a>
+                    </div>
+                    [/e:loop]
+                    <div class="bannerlist">
+                        [e:loop={'206',1,2,0}]
+                        <dl>
+                            <dt>
+                                <?=$bqsr[smalltext]?>
+
+                            </dt>
+                            <dd><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">【天维热点】<?=esub($bqr[title],20)?>...</a></dd>
+                        </dl>
+                        [/e:loop]
+                        [e:loop={'209',1,2,0}]
+                        <dl style="margin-left:19px">
+                            <dt>
+                                <?=$bqsr[smalltext]?>
+
+                            </dt>
+                            <dd><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">【天维现场】<?=esub($bqr[title],20)?>...</a></dd>
+                        </dl>
+                        [/e:loop]
+                    </div>
+
+                    <div class="clearfix banner-table">
+                        <ul class="clearfix">
+                            [e:loop={'160',4,0,1}]
+                            <li>
+                                <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">
+                                    <img src="<?=$bqr[titlepic]?>" width="130" height="78" />
+                                </a>
+
+                                <span class="banner-table-right">
+                                    <span class="banner-table-right-tit">
+                                        <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>">
+                                            <?=$bqr[ftitle]?>
+                                        </a>
+                                    </span>
+                                    <span class="banner-table-right-text"><?=esub($bqr[smalltext],45)?>...</span>
+                                </span>
+                            </li>
+                            [/e:loop]
+                        </ul>
+                    </div>
+
+                    <div class="hot-search-title">
+                        <span><label class="hot-search-title-label1">HOT</label><label class="hot-search-title-label2">热搜榜</label></span>
+                        <a href="http://news.skykiwi.com" class="sky-more-style" style="color:#7f7f7f" target="_blank">更多>></a>
+                    </div>
+                    <div class="news-general-list" style="border-top:0px !important">
+
+                        <ul id="ul-hotsearch-news">
+                            [e:loop={'SELECT * FROM phome_ecms_news WHERE checked=1 AND DATE_SUB(CURDATE(), INTERVAL 2 DAY) < newstime ORDER BY onclick DESC LIMIT 0,9', 9, 24, 0}]
+                            <li class="list-group-item"><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],33)?></a></li>
+                            [/e:loop]
+                        </ul>
+                    </div>
+                    <div class="sky-jinyuanjinrong">
+                        <iframe src="http://ads.mcmnz.com/JINYUAN-RATE/" width="298" scrolling="no" frameborder="0"></iframe>
+                    </div>
+
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+            <div style="width:950px;height:100px;margin:15px 0">
+                <img src="image/banner0008_03.jpg" />
+            </div>
+            <div class="tab-left-double">
+
+                <!--房产 begin-->
+                <div class="tab-left-double-div1">
+                    <div class="caijin-title-spanexpend">
+                        <span controlindex="1" class="caijin-span-tit active-tit-a" style="color:#034d82">在售房源</span>
+                        <!--<span class="caijin-span-tit active-tit-a" onclick="initTabClass(this,'#034d82',2)">拍卖结果</span>-->
+                    </div>
+                    <div class="sky-margintop10">
+                        <div controlindex="1">
+                            <!--#include virtual="/ssi/indexhome201706.html" -->
+                        </div>
+                    </div>
+                    <script src="http://cms6.skykiwi.com/js/pglist-v1.0.js" type="text/javascript"></script>
+                </div>
+
+                <!--<div controlindex="2" style="display:none"></div>-->
+                <!--<iframe src="http://cms6.skykiwi.com/ssi/indexhome201706.html"></iframe>-->
+                <!--房产  end-->
+                <!--纽澳财经 begin-->
+                <div class="tab-left-double-div2">
+                    <div class="caijin-title-span">
+                        <span controlindex="1" class="caijin-span-tit" onclick="initTabClass(this,'#034d82',1)">纽澳财经</span>
+                        <span controlindex="2" class="caijin-span-tit" onclick="initTabClass(this,'#034d82',2)">投资热门</span>
+                    </div>
+                    <div class="sky-margintop10">
+                        <div class="caijin-span" controlindex="1">
+                            [e:loop={'49',1,12,1}]
+                            <div style="height:165px">
+                                <div class="sky-floatL"><a href="<?=$bqsr[titleurl]?>" target="_blank"><img style="border:1px solid #898989" width="125" height="155" src="<?=$bqr[titlepic]?>" /></a></div>
+                                <div class="sky-caijing-info">
+                                    <dl>
+                                        <dt class="sky-caijing-info-title"><a href="<?=$bqsr[titleurl]?>" target="_blank"><?=esub($bqr[ftitle],32)?></a></dt>
+                                        <dd class="sky-caijing-info-detail"><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[smalltext],88)?>...[详细]</a></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            [/e:loop]
+                            <div class="lvyou-list-ul-line"></div>
+                            <div class="sky-caijing">
+                                <ul class="list-group-generalitem">
+                                    [e:loop={'49',9,12,0}]
+                                    <li><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],38)?></a></li>
+                                    [/e:loop]
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="caijin-span" style="display:none" controlindex="2">
+                            [e:loop={'161',1,12,1}]
+                            <div style="height:165px">
+                                <div class="sky-floatL"><a href="<?=$bqsr[titleurl]?>" target="_blank"><img style="border:1px solid #898989" width="125" height="155" src="<?=$bqr[titlepic]?>" /></a></div>
+                                <div class="sky-caijing-info">
+                                    <dl>
+                                        <dt class="sky-caijing-info-title"><a href="<?=$bqsr[titleurl]?>" target="_blank"><?=esub($bqr[ftitle],32)?></a></dt>
+                                        <dd class="sky-caijing-info-detail"><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[smalltext],100)?>...[详细]</a></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            [/e:loop]
+                            <div class="lvyou-list-ul-line"></div>
+                            <div class="sky-caijing">
+                                <ul class="list-group-generalitem">
+                                    [e:loop={'161',9,12,0}]
+                                    <li><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],38)?></a></li>
+                                    [/e:loop]
+                                </ul>
+                                <!--[ecmsinfo]161,9,38,0,0,18,0[/ecmsinfo]-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--纽澳财经  end-->
+                <div style="clear:both;"></div>
+                <div style="height:80px;width:625px;overflow:hidden;margin:10px 0">
+                    <img height="80" width="625" alt="" src="image/banner4.png">
+                </div>
+                <!--生活 旅游 begin-->
+                <div id="flash1" class="slideBox sky-floatL" style="margin: 10px 0;">
+                    <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_slidelist.js" charset="utf-8"></script>
+                </div>
+
+                <div class="tab-left-double-div2">
+                    <div class="caijin-title-span">
+                        <span controlindex="1" class="caijin-span-tit" onclick="initTabClass(this,'#ef537a',1)">生活</span>
+                        <span controlindex="2" class="caijin-span-tit" onclick="initTabClass(this,'#ef537a',2)">旅游</span>
+                        <a controlindex="1" target="_blank" href="http://go.skykiwi.com/skyselected/life/" class="sky-more-style">更多>></a>
+                        <a controlindex="2" target="_blank" href="http://go.skykiwi.com/skyselected/entertainment/" class="sky-more-style">更多>></a>
+                    </div>
+                    <div class="sky-margintop10">
+                        <div class="caijin-span" controlindex="1">
+                            <div style="display: inline-block;" id="div-life-control">
+                                <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_life.js" charset="utf-8"></script>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $("#div-life-control dl:eq(1)").css("margin-left", "15px").after('<div style="clear:both;"></div><div class="lvyou-list-ul-line"></div>');
+                                        $("#div-life-control dl:eq(3)").css("margin-left", "15px").after('<div style="clear:both;"></div><div class="lvyou-list-ul-line"></div>');
+                                    })
+                                </script>
+                            </div>
+                            <div>
+                                <ul>
+                                    <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_lifelist.js" charset="utf-8"></script>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="caijin-span" controlindex="2">
+                            <div style="display: inline-block;" id="div-tourism-control">
+                                <script type="text/javascript" src="http://go.skykiwi.com/homepage_tourism.js" charset="utf-8"></script>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $("#div-tourism-control dl:eq(1)").css("margin-left", "15px").after('<div style="clear:both;"></div><div class="lvyou-list-ul-line"></div>');
+                                        $("#div-tourism-control dl:eq(3)").css("margin-left", "15px").after('<div style="clear:both;"></div><div class="lvyou-list-ul-line"></div>');
+                                    })
+                                </script>
+                            </div>
+                            <div>
+                                <ul>
+                                    <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_tourismlist.js" charset="utf-8"></script>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--生活 旅游  end-->
+                <div style="clear:both;"></div>
+                <!--特价 时尚 美食 begin-->
+                <div class="tab-left-double-div1">
+                    <div class="caijin-title-spanexpend">
+                        <span controlindex="1" class="active-tit-single active-tit-a active-tit-ashenghuo" style="color:#ef537a">特价</span>
+                        <a controlindex="1" target="_blank" href="http://go.skykiwi.com/skyselected/supermarket/" class="sky-more-style">更多>></a>
+                    </div>
+                    <div class="sky-margintop10">
+                        <div class="caijin-span" controlindex="1">
+                            <div>
+                                <ul class="caijin-span-tejia">
+                                    <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_specialoffer.js" charset="utf-8"></script>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-left-double-div2">
+                    <div class="caijin-title-span">
+                        <span controlindex="1" class="caijin-span-tit" onclick="initTabClass(this,'#ef537a',1)">时尚</span>
+                        <span controlindex="2" class="caijin-span-tit" onclick="initTabClass(this,'#ef537a',2)">美食</span>
+                        <a controlindex="1" target="_blank" href="http://go.skykiwi.com/skyselected/fashion/" class="sky-more-style">更多>></a>
+                        <a controlindex="2" target="_blank" href="http://go.skykiwi.com/skyselected/food/" class="sky-more-style">更多>></a>
+                    </div>
+                    <div class="sky-margintop10">
+                        <div class="caijin-span" controlindex="1">
+                            <div class="sky-shishang">
+                                <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_fashion.js" charset="utf-8"></script>
+                            </div>
+                            <div class="sky-shishang" id="div-fashion-controllist">
+                                <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_fashionlist.js" charset="utf-8"></script>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $("#div-fashion-controllist dl:eq(1)").css("margin-left", "15px").after('<div style="clear:both;"></div>');
+                                    })
+                                </script>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+                        <div class="caijin-span" controlindex="2">
+                            <div class="sky-shishang">
+                                <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_food.js" charset="utf-8"></script>
+                            </div>
+                            <div class="sky-shishang" id="div-food-controllist">
+                                <script type="text/javascript" language="javascript" src="http://go.skykiwi.com/homepage_foodlist.js" charset="utf-8"></script>
+                                <script type="text/javascript" id="div-food-controllist">
+                                    $(function () {
+                                        $("#div-food-controllist dl:eq(1)").css("margin-left", "15px").after('<div style="clear:both;"></div>');
+                                    })
+                                </script>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--特价时尚美食 end-->
+                <div style="clear:both;"></div>
+                <!--广告 begin-->
+                <div style="float:left;width:300px;height:100px;overflow:hidden;margin:10px 0">
+                    <img style="width:300px;height:100px" src="image/tejia.png" />
+                </div>
+                <div style="float:right;width:300px;height:100px;overflow:hidden;margin:10px 0">
+                    <img style="width:300px;height:100px" src="image/00025.png" />
+                </div>
+                <!--广告 end-->
+                <div style="clear:both;"></div>
+                <!--天维专题  begin-->
+                <div id="flash2" class="slideBox" style="float:left;margin:10px 0">
+                    <ul class="items">
+                        [e:loop={"select * from phome_ecms_news where classid=219 and checked=1 order by istop asc limit 5",5,24,1}]
+                        <li>
+                            <a href="<?=$bqsr[titleurl]?>" title="<?=$bqr[ftitle]?>">
+                                <img width="300" height="270" src="<?=$bqsr[titlepic]?>">
+                            </a>
+                        </li>
+                        [/e:loop]
+                    </ul>
+                </div>
+                <div class="tab-left-double-div2">
+                    <div class="caijin-title-spanexpend">
+                        <span controlindex="1" class="active-tit-single active-tit-a active-tit-azhuanti" style="color:#f5842b">天维专题</span>
+                        <a href="##" class="sky-more-style">更多>></a>
+                    </div>
+                    <div class="sky-margintop10">
+                        <div class="caijin-span" controlindex="1">
+                            [e:loop={'203',1,12,0}]
+                            <div class="sky-zhuanti-title"><a href="<?=$bqsr[titleurl]?>" target="_blank"><?=esub($bqr[title],58)?></a></div>
+                            <div class="sky-zhuanti-content">
+                                <?=esub($bqr[smalltext],160)?>...
+                            </div>
+                            [/e:loop]
+                            <ul class="sky-zhuanti-list">
+                                [e:loop={'203',4,12,0}]
+                                <li class="sky-ul-list1"><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],35)?></a></li>
+                                [/e:loop]
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--天维专题 end-->
+                <div style="clear:both;"></div>
+                <!--留学移民 专栏 begin-->
+                <div class="tab-left-double-div1">
+                    <div class="caijin-title-spanexpend">
+                        <span class="active-tit-single active-tit-a active-tit-ayimin" style="color:#448e4f">留学移民</span>
+                        <a href="http://imedu.skykiwi.com" target="_blank" title="新西兰留学，新西兰移民，新西兰留学移民政策发布，新闻发布，尽在天维留学移民频道 - 点击查看更多留学移民新闻" class="sky-more-style">更多>></a>
+                    </div>
+                    <div class="sky-margintop10">
+                        <div class="caijin-span" controlindex="1">
+                            <div>
+                                [e:loop={'109',1,12,1}]
+                                <div class="sky-floatL">
+                                    <a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><img style="border:1px solid #898989" width="140" height="80" src="<?=$bqr[titlepic]?>" /></a>
+                                </div>
+                                <div class="sky-liuxueyimin">
+                                    <dl>
+                                        <dd><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=$bqr[ftitle]?></a></dd>
+                                        <dt style="height:55px;overflow:hidden"><?=esub($bqr[smalltext],56)?>...</dt>
+                                    </dl>
+                                </div>
+                                [/e:loop]
+                            </div>
+                            <div class="sky-floatL">
+                                <ul>
+                                    [e:loop={'109',2,12,0}]
+                                    <li class="sky-ul-list1"><a href="<?=$bqsr[titleurl]?>" target="_blank" title="<?=$bqr[title]?>"><?=esub($bqr[title],35)?></a></li>
+                                    [/e:loop]
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-left-double-div2">
+                    <div class="caijin-title-spanexpend">
+                        <span controlindex="1" class="active-tit-single active-tit-a active-tit-azhuanlan" style="color:#653780">专栏</span>
+                    </div>
+                    <div class="sky-margintop10">
+                        <div class="caijin-span" controlindex="1">
+                            [e:loop={'SELECT * FROM phome_enewsclass INNER JOIN phome_ecms_news ON phome_enewsclass.classid=phome_ecms_news.classid WHERE bclassid in (32,58) ORDER BY firsttitle DESC,newstime DESC LIMIT 0,1',1,24,0}]
+                            <div class="sky-floatL"><img style="width:100px;height:130px;border:1px solid #898989;display:block" src="<?=$bqr[classimg]?>" /></div>
+                            <div class="sky-floatR">
+                                <dl>
+                                    <dd class="sky-zhuanlan-author">专栏作者：<?=$bqr[writer]?></dd>
+                                    <dt class="sky-zhuanlan-title"><a href="<?=$bqsr[titleurl]?>" style="text-decoration:none;font-weight:bold;color:#653780" target="_blank" title="<?=$bqr[title]?>"><?=$bqr[title]?></a></dt>
+                                    <content class="sky-zhuanlan-content"><?=esub($bqr[smalltext],88)?>...</content>
+                                </dl>
+                            </div>
+                            [/e:loop]
+                        </div>
+                    </div>
+                </div>
+                <!--留学移民 专栏end-->
+                <div style="clear:both;"></div>
+            </div>
+            <div class="activity-right">
+                <div class="sky-activity-title">
+                    <span>近期活动</span>
+                </div>
+                <div class="sky-activity-info">
+                    <img src="image/huodong01.png" alt="" />
+                </div>
+                <div class="sky-activity-info">
+                    <img style="" src="image/huodong02.png" alt="" />
+                </div>
+
+                <div class="sky-banner">
+                    <img height="250" style="display:block" width="300" src="image/bannerright1.jpg">
+                </div>
+                <div class="sky-banner">
+                    <img height="250" style="display:block" width="300" src="image/guanggao-009_03.jpg">
+                </div>
+                <div class="tianwei-right-tab" id="sky-tuangou-tab">
+                    <span class="tianwei-right-title">天维福利.团购</span>
+                    <!--#include virtual="/ssi/bonusListsIndex201706.html" -->
+                    <span id="sky-tuangou-prev" class="tuangou-list-select" style="left:10px;">〈</span>
+                    <span id="sky-tuangou-next" class="tuangou-list-select" style="right:10px;">〉</span>
+                </div>
+                <div class="sky-banner"><img style="height:250px;width:300px;display:block" src="image/guanggao008.png" /></div>
+                <div class="tianwei-right-tab">
+                    <span class="tianwei-right-title">天维橙页VIP商家</span>
+                    <div class="sky-vip">
+                        <a id="pre_vipopage">▲</a>
+                        <a id="next_vipopage">▼</a>
+                    </div>
+                    <div class="tianwei-VIP-item" style="height:335px; padding-top:15px; padding-bottom:15px">
+                        <dl class="sky-vip-list" id="opage_vip_list">
+                            <script type="text/javascript" src="http://opage.skykiwi.com/js.php?callid=58"></script>
+                        </dl>
+                        <script language="javascript" type="text/javascript">
+                            var scroll_opage = new ScrollText("opage_vip_list", "pre_vipopage", "next_vipopage", true, 80, true);
+                            scroll_opage.LineHeight = 24;
+                            $(".sky-vip-list dd").addClass("list-group-item");
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+            <div style="height:80px;width:950px;overflow:hidden; margin:25px 0">
+                <img height="80" width="948" src="image/guangao007.png" />
+            </div>
+            <div class="sky-info">
+                <div class="sky-left-logo sky-floatL"><img src="image/skykiwi.png"></div>
+                <div class="sky-floatL"><img src="image/skykiwi-contract.png"></div>
+                <div class="foot-banner-nav sky-floatL">
+                    <ul>
+                        <li>
+                            <a href="http://em.skykiwi.com/index.html" target="_blank">广告首页</a>
+                        </li>
+                        <li>
+                            <a href="http://em.skykiwi.com/advertising.html" target="_blank">宣传方案</a>
+                        </li>
+                        <li>
+                            <a href="http://em.skykiwi.com/adshow_index.html" target="_blank">广告图示</a>
+                        </li>
+                        <li>
+                            <a href="http://em.skykiwi.com/download-ratecard.html" target="_blank">报价下载</a>
+                        </li>
+                        <li>
+                            <a href="http://em.skykiwi.com/successcase_index.html" target="_blank">成功案例</a>
+                        </li>
+                        <li>
+                            <a href="http://em.skykiwi.com/knowledge.html" target="_blank">常识须知</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="foot-banner-nav-s">
+                    <ul>
+                        <li>
+                            <a href="http://em.skykiwi.com/aboutus.html" target="_blank">关于天维</a>
+                        </li>
+                        <li>
+                            <a href="http://em.skykiwi.com/contactus.html" target="_blank">联系我们</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+            <div id="skyapp">
+                <ul style="width:950px">
+                    <li>
+                        <img alt="" src="/image/tianweiapplogo.png" />
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -2px 3px  no-repeat;" target="_blank" href="http://www.weibo.com/skykiwidotcom" title="关注我们的微博">
+                        </a>
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -62px 3px  no-repeat;" href="javascript:wechathome()" title="关注我们的微信">
+                        </a>
+                        <span id="wechat_home" style="display: none;"></span>
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -122px 3px  no-repeat;" target="_blank" href="https://www.facebook.com/skykiwi" title="关注我们的脸书">
+                        </a>
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -182px 3px  no-repeat;" target="_blank" href="https://twitter.com/skykiwidotcom" title="关注我们的推特">
+                        </a>
+                    </li>
+                    <li class="sky-app-content">
+                        <img alt="" src="/image/tianweigo.png" />
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -2px 3px  no-repeat;" target="_blank" href="http://www.weibo.com/skykiwibuy" title="关注我们的导购微博">
+
+                        </a>
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -62px 3px  no-repeat;" href="javascript:wechatgo()">
+
+                        </a>
+                        <span id="wechat_go" style="display: none;"></span>
+                    </li>
+                    <li class="sky-app-content">
+                        <img alt="" src="/image/tianweilife.png" />
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -62px 3px  no-repeat;" title="关注我们的天维生活" href="javascript:wechattuangou()">
+
+                        </a>
+                        <span id="wechat_soku" style="display: none;"></span>
+                    </li>
+                    <li class="sky-app-content">
+                        <img alt="" src="/image/tianweiproperty.png" />
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -62px 3px  no-repeat;" title="关注我们的微房产" href="javascript:wechatproperty()">
+
+                        </a>
+                        <span id="wechat_property" style="display: none;"></span>
+                    </li>
+                    <li class="sky-app-content">
+                        <img alt="" src="/image/tianwei8.png" />
+                        <a class="icon-nav" style="background:url(/image/socialmedia.jpg) -62px 3px  no-repeat;" title="关注我们的导购微信" href="javascript:wechatmoney()">
+
+                        </a>
+                        <span id="wechat_money" style="display: none;"></span>
+                    </li>
+                    <div style="clear:both">
+                    </div>
+                </ul>
+                <script type="text/javascript">
+                            function wechathome() { wechat_home.style.display = "block"; }
+                            function wechatgo() { wechat_go.style.display = "block"; }
+                            function wechatproperty() { wechat_property.style.display = "block"; }
+                            function wechattuangou() { wechat_soku.style.display = "block"; }
+                            function wechatmoney() { wechat_money.style.display = "block"; }
+                            function hidden() { wechat_home.style.display = "none"; wechat_go.style.display = "none"; wechat_property.style.display = "none"; wechat_soku.style.display = "none"; wechat_money.style.display = "none"; }
+                            document.onclick = hidden;
+                </script>
+            </div>
+            <div style="border-bottom:1px dashed #b7b7b7">
+                <div id="part3">
+                    <img src="http://www.skykiwi.com/home2011/images/icon_links.jpg" width="75" height="20" title="新西兰常用网站链接，天维网为您搜集最全的新西兰实用网址导航" class="mg15">
+                    <select size="1" name="jumpMenu1" id="jumpMenu" onchange="MM_jumpMenu('parent',this,0)">
+                        <option selected="selected">------主要政府网站------</option>
+                        <option value="http://www.police.govt.nz/">警察局</option>
+                        <option value="http://www.immigration.govt.nz">移民局</option>
+                        <option value="http://www.ird.govt.nz">政府税务</option>
+                        <option value="http://www.govt.nz">新西兰政府</option>
+                        <option value="http://www.nzpost.co.nz/">邮政局</option>
+                        <option value="http://www.studylink.govt.nz/financing-study/student-allowance/index.html">学生津贴</option>
+                        <option value="http://www.customs.govt.nz/default.htm">新西兰海关</option>
+                        <option value="http://www.studylink.govt.nz/financing-study/student-loan/index.html">学生贷款</option>
+                        <option value="http://www.companies.govt.nz/pls/web/dbssiten.main">公司注册</option>
+                        <option value="http://www.newzealand.com/travel/">旅游局</option>
+                        <option value="http://www.chinaembassy.org.nz/eng/">中国大使馆</option>
+                        <option value="http://www.chinaconsulate.org.nz/chn/default.htm">中驻奥克兰领事馆</option>
+                    </select>
+                    <select size="1" name="jumpMenu2" id="jumpMenu" onchange="MM_jumpMenu('parent',this,0)">
+                        <option selected="selected">------文化教育链接------</option>
+                        <option value="http://www.auckland.ac.nz">奥克兰大学</option>
+                        <option value="http://www.aut.ac.nz">奥克兰理工大学</option>
+                        <option value="http://www.massey.ac.nz">梅西大学</option>
+                        <option value="http://www.victoria.ac.nz">维多利亚大学</option>
+                        <option value="http://www.otago.ac.nz">奥塔哥大学</option>
+                        <option value="http://www.canterbury.ac.nz">坎特伯雷大学</option>
+                        <option value="http://www.waikato.ac.nz">怀卡托大学</option>
+                        <option value="http://www.lincoln.ac.nz">林肯大学</option>
+                        <option value="http://www.nzqa.govt.nz">学历认证</option>
+                        <option value="http://www.internationaleducationmedia.com/newzealand/schools.htm">新西兰学校介绍</option>
+                        <option value="http://www.englishnewzealand.co.nz">英语教学机构</option>
+                        <option value="http://www.educationnz.org.nz">新西兰教育网</option>
+                        <option value="http://www.onlynz.net">学在新西兰</option>
+                    </select>
+                    <select size="1" name="jumpMenu3" id="jumpMenu" onchange="MM_jumpMenu('parent',this,0)">
+                        <option selected="selected">------医疗健康链接------</option>
+                        <option value="http://www.moh.govt.nz/healthsystem">新西兰医疗制度</option>
+                        <option value="http://www.moh.govt.nz/childhealth">幼儿保健</option>
+                        <option value="http://www.healthinsurance.co.nz/health_International_Students.cfm">留学生医疗保险</option>
+                        <option value="http://www.moh.govt.nz/olderpeople">老年人医疗</option>
+                        <option value="http://www.emigratenz.org/healthcare-migrants-newzealand.html">在新西兰看病</option>
+                    </select>
+                    <select size="1" name="jumpMenu4" id="jumpMenu" onchange="MM_jumpMenu('parent',this,0)">
+                        <option selected="selected">------其他实用链接------</option>
+                        <option value="http://www.village.co.nz/vistait/village/Default.aspx?Control=NowShowing">电影院</option>
+                        <option value="http://www.tapeka.com/publicholidays.htm">公定假期</option>
+                        <option value="http://www.timeanddate.com/worldclock/">世界时间</option>
+                        <option value="http://www.railnewzealand.com/">铁路交通</option>
+                        <option value="http://www.police.govt.nz/service/111/index.html">紧急事故</option>
+                        <option value="http://www.yellowpages.co.nz/">电话黄页</option>
+                        <option value="http://www.ltsa.govt.nz">驾照执照</option>
+                        <option value="http://www.aa.co.nz">AA汽车协会</option>
+                        <option value="http://b2b.ratestogo.com">酒店预定</option>
+                        <option value="http://www.carjam.co.nz">汽车信息查询</option>
+                        <option value="http://www.turners.co.nz">汽车拍卖</option>
+                    </select>
+                </div>
+            </div>
+           
+            <div class="links">
+                <h3>友情链接</h3>
+                <a href="http://www.nzherald.co.nz" target="_blank" title="New Zealand Herald" rel="nofollow"><img src="http://www.skykiwi.com/home2011/images/link/logo-nzherald.jpg"></a>
+                <a href="http://www.tv3.co.nz" target="_blank" title="New Zealand TV3" rel="nofollow"><img src="http://www.skykiwi.com/home2011/images/link/logo-tv3.jpg"></a>
+                <a href="http://huaren.haiwainet.cn" target="_blank" title="海外网" rel="nofollow"><img src="http://www.skykiwi.com/home2011/images/link/logo-haiwainet.jpg"></a>
+                <a href="http://chinese.people.com.cn" target="_blank" title="人民网" rel="nofollow"><img src="http://www.skykiwi.com/home2011/images/link/logo-people.jpg"></a>
+                <a href="https://www.feijipiao.co.nz/" target="_blank" title="途翼旅行"><img src="http://www.skykiwi.com/home2011/images/link/logo-tourism.jpg" /></a>
+                <a href="http://www.chinaqw.com/" target="_blank" title="中国侨网"><img src="http://www.skykiwi.com/home2011/images/link/logo_chinaqw.jpg"></a>
+                <!-- <a href="http://www.ucpnz.com" target="_blank" title="新西兰联合报" rel="nofollow"><img src="http://www.skykiwi.com/home2011/images/link/logo-ucpnz.jpg" /></a> -->
+                <a href="http://www.globaltimes.com.cn" target="_blank" title="环球时报" rel="nofollow"><img src="http://www.skykiwi.com/home2011/images/link/logo-global-times.jpg"></a>
+                <a href="http://g.58.com/j-glauckland/" target="_blank" title="58同城奥克兰站"><img alt="58同城奥克兰站" src="http://www.skykiwi.com/home2011/images/link/logo-58.jpg"></a>
+                <!-- <a href="http://www.wanguo.co.nz" target="_blank" title="新西兰万国旅行社" rel="nofollow"><img src="http://www.skykiwi.com/home2011/images/link/logo-wanguo.jpg" title="Link to wanguo.co.nz" /></a> -->
+
+                <a href="https://www.priceme.co.nz" target="_blank" title="PriceMe" rel="nofollow"><img src="http://www.skykiwi.com/home2011/images/link/logo_priceme.png" title="Link to Priceme.co.nz"></a>
+            </div>
+            <div id="footer">
+                <p><a href="http://em.skykiwi.com/aboutus.html" target="_blank" class="ico"> 关于天维</a> | <a href="http://em.skykiwi.com/english.html" target="_blank">About Us</a> | <a href="http://em.skykiwi.com/termsofuse.html" target="_blank">使用条款</a> | <a href="http://em.skykiwi.com/privacy.html" target="_blank">隐私声明</a> | <a href="http://em.skykiwi.com" target="_blank">广告服务</a> | <a href="http://em.skykiwi.com/contactus.html" target="_blank">联系我们</a> | <a href="http://em.skykiwi.com/aboutus_join.html" target="_blank">招贤纳士</a> | <a href="http://bbs.skykiwi.com/member.php?mod=regsky.php" target="_blank">会员注册</a></p>
+                <p><span>&copy;&nbsp;</span> Sky Media Ltd. 2017. All rights reserved. </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

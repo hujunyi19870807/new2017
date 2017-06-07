@@ -1,0 +1,70 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>pdemo</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #body {
+            width: 980px;
+            height: 1500px;
+            background: #CCC;
+            margin: auto;
+        }
+
+        #top {
+            width: 980px;
+            height: 200px;
+            background: #3F0;
+            margin: 0px;
+        }
+
+        #bar {
+            width: 980px;
+            height: 30px;
+            background: #60F;
+            margin: 0px auto auto 0px;
+        }
+    </style>
+    <script src="jquery-1.12.4.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var scroll_top, initial_top, screen_top, $bar;
+            $bar = $("#bar");
+            initial_top = $bar.offset().top;
+            window.onscroll = function () {
+                scroll_top = document.documentElement.scrollTop || document.body.scrollTop;
+                screen_top = initial_top - scroll_top;
+                $bar.html(initial_top + " " + scroll_top + " " + screen_top);
+                if (screen_top <= 0) {
+                    $bar.css({ "top": "0px", "position": "fixed" });
+                } else if (scroll_top <= initial_top) {
+                    $bar.css({ "position": "static" });
+                }
+            }
+           
+        });
+    </script>
+</head>
+
+
+<body>
+    <div id="body">
+        <div id="top"></div>
+        <div id="bar"></div>
+        <ul id="weatherCities" style="line-height:1.6">
+            <li data-min-temp="11" data-max-temp="15" data-icon="scattered-clouds-night" data-desc="scattered clouds" data-title-ch="奥克兰" data-title-en="Auckland">奥克兰(Auckland)</li>
+            <li data-min-temp="12" data-max-temp="28" data-icon="clear-sky-night" data-desc="clear sky" data-title-ch="哈密尔顿" data-title-en="Hamilton">哈密尔顿(Hamilton)</li>
+            <li data-min-temp="11" data-max-temp="11" data-icon="rain-night" data-desc="light rain" data-title-ch="惠灵顿" data-title-en="Wellington">惠灵顿(Wellington)</li>
+            <li data-min-temp="8" data-max-temp="9" data-icon="rain-night" data-desc="light rain" data-title-ch="基督城" data-title-en="Christchurch">基督城(Christchurch)</li>
+            <li data-min-temp="0" data-max-temp="4" data-icon="clear-sky-night" data-desc="clear sky" data-title-ch="皇后镇" data-title-en="Queenstown">皇后镇(Queenstown)</li>
+            <li data-min-temp="23" data-max-temp="28" data-icon="rain-night" data-desc="moderate rain" data-title-ch="达尼丁" data-title-en="Dunedin">达尼丁(Dunedin)</li>
+            <li data-min-temp="2" data-max-temp="12" data-icon="few-clouds-night" data-desc="few clouds" data-title-ch="北帕默斯顿" data-title-en="Palmerston North">北帕默斯顿(Palmerston North)</li>
+        </ul>
+    </div>
+</body>
+</html>
